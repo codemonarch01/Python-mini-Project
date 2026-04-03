@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 text-center">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden mt-5 mb-5 border-top border-success border-5">
+            <div class="card-body p-4 p-md-5">
+                <div class="mb-4 text-success mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                </div>
+                <h2 class="fw-bold text-dark mb-3">Order Completed!</h2>
+                <p class="lead text-muted mb-4">Thank you for your purchase. Your order has been placed successfully.</p>
+                <div class="bg-light rounded p-4 mb-4 text-start">
+                    <p class="mb-2"><span class="text-muted fw-semibold">Order ID:</span> <span class="fw-bold ms-2">#{{ order.id }}</span></p>
+                    <p class="mb-2"><span class="text-muted fw-semibold">Total Amount:</span> <span class="fw-bold text-primary ms-2">${{ "%.2f"|format(order.total_price) }}</span></p>
+                    <p class="mb-2"><span class="text-muted fw-semibold">Date Ordered:</span> <span class="fw-medium ms-2">{{ order.date_ordered.strftime('%B %d, %Y') }}</span></p>
+                    <p class="mb-0 mt-3 border-top pt-3"><span class="text-muted fw-semibold d-block mb-1">Shipping Address:</span> <span class="fw-medium text-dark">{{ order.address }}</span></p>
+                </div>
+                <div class="d-flex gap-3 justify-content-center mt-5">
+                    <a href="{{ url_for('orders') }}" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">View My Orders</a>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary rounded-pill px-4 fw-semibold shadow-sm">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

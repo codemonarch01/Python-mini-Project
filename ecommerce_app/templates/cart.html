@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="fw-bold mb-4">Your Shopping Cart</h2>
+
+{% if cart_items %}
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 cart-table">
+                        <thead class="bg-light text-muted small text-uppercase">
+                            <tr>
+                                <th scope="col" class="ps-4 py-3 fw-semibold border-0">Product</th>
+                                <th scope="col" class="py-3 fw-semibold border-0 text-center">Price</th>
+                                <th scope="col" class="py-3 fw-semibold border-0 text-center">Quantity</th>
+                                <th scope="col" class="py-3 fw-semibold border-0 text-center">Total</th>
+                                <th scope="col" class="pe-4 py-3 border-0"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="border-top-0">
+                            {% for item in cart_items %}
+                            <tr>
+                                <td class="ps-4 py-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded p-2 me-3" style="width: 60px; height: 60px;">
+                                            <img src="{{ url_for('static', filename='images/' + item.product.image) }}" class="img-fluid mix-blend-multiply h-100 object-fit-contain" alt="{{ item.product.name }}" onerror="this.src='https://via.placeholder.com/60?text=No+Image';">
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">{{ item.product.name }}</h6>
+                                            <small class="text-muted">{{ item.product.category }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-center fw-medium text-dark">${{ "%.2f"|format(item.product.price) }}</td>
+                                <td class="py-3">
+                                    <form action="{{ url_for('update_cart', id=item.product.id) }}" method="POST" class="d-flex justify-content-center align-items-center gap-2">
+                                        <button type="submit" name="action" value="decrease" class="btn btn-sm btn-light rounded-circle fw-bold text-secondary px-2 py-1 qty-btn">-</button>
+                                        <span class="fw-bold mx-1">{{ item.quantity }}</span>
+                                        <button type="submit" name="action" value="increase" class="btn btn-sm btn-light rounded-circle fw-bold text-secondary px-2 py-1 qty-btn">+</button>
+                                    </form>
+                                </td>
+                                <td class="py-3 text-center fw-bold text-primary">${{ "%.2f"|format(item.item_total) }}</td>
+                                <td class="pe-4 py-3 text-end">
+                                    <form action="{{ url_for('update_cart', id=item.product.id) }}" method="POST">
+                                        <button type="submit" name="action" value="remove" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 remove-btn">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 summary-card sticky-top" style="top: 80px;">
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-4">Order Summary</h5>
+                <div class="d-flex justify-content-between mb-3 text-muted">
+                    <span>Subtotal</span>
+                    <span class="fw-medium text-dark">${{ "%.2f"|format(total_price) }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-4 text-muted">
+                    <span>Shipping</span>
+                    <span class="fw-medium text-success">Free</span>
+                </div>
+                <hr class="border-secondary opacity-25 mb-4">
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="fw-bold fs-5">Total</span>
+                    <span class="fw-bold fs-4 text-primary">${{ "%.2f"|format(total_price) }}</span>
+                </div>
+                <a href="{{ url_for('checkout') }}" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2 checkout-btn">
+                    Proceed to Checkout
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5">
+    <div class="display-1 text-muted mb-4 opacity-25">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-cart-x" viewBox="0 0 16 16">
+          <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793 7.354 5.646z"/>
+          <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+        </svg>
+    </div>
+    <h3 class="fw-bold text-dark mb-3">Your cart is empty</h3>
+    <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-primary rounded-pill px-4 py-2 mt-2">Continue Shopping</a>
+</div>
+{% endif %}
+{% endblock %}

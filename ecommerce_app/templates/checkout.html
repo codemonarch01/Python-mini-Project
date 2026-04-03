@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-5">
+            <div class="bg-primary bg-gradient p-4 text-white text-center">
+                <h3 class="fw-bold mb-0">Checkout</h3>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <div class="bg-light rounded p-3 mb-4 text-center">
+                    <span class="text-muted d-block mb-1 small text-uppercase fw-semibold">Order Total</span>
+                    <span class="fs-2 fw-bold text-dark">${{ "%.2f"|format(total_price) }}</span>
+                </div>
+                
+                <h5 class="fw-bold mb-3 border-bottom pb-2">Shipping Details</h5>
+                <form method="POST">
+                    <div class="mb-4">
+                        <label for="address" class="form-label text-muted small fw-semibold">Delivery Address</label>
+                        <textarea class="form-control bg-light border-0 py-3" id="address" name="address" rows="3" required placeholder="Enter your full shipping address here..."></textarea>
+                    </div>
+                    
+                    <h5 class="fw-bold mb-3 border-bottom pb-2 mt-5">Payment Method</h5>
+                    <div class="mb-4">
+                        <div class="form-check bg-light p-3 rounded border border-light shadow-sm d-flex align-items-center mb-2">
+                            <input class="form-check-input ms-1 me-3 fs-5 mt-0" type="radio" name="payment" id="cod" checked>
+                            <label class="form-check-label fw-medium text-dark w-100" for="cod">
+                                Cash on Delivery
+                                <span class="d-block text-muted small fw-normal">Pay when you receive your order</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow-sm mt-4 py-3 text-uppercase tracking-wide place-order-btn">Place Order Securely</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
